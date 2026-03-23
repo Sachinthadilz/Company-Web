@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
 
@@ -77,6 +78,13 @@ const BlogPost = () => {
 
   return (
     <article>
+      <Helmet>
+        <title>{post.title} | ARTecX Blog</title>
+        <meta name="description" content={post.excerpt || post.content.replace(/<[^>]+>/g, '').slice(0, 160)} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt || post.content.replace(/<[^>]+>/g, '').slice(0, 160)} />
+        {post.coverUrl && <meta property="og:image" content={post.coverUrl} />}
+      </Helmet>
       {/* Cover hero */}
       <div className="relative pt-20 bg-gradient-to-br from-primary to-secondary min-h-[40vh] flex flex-col justify-end">
         {post.coverUrl && (
