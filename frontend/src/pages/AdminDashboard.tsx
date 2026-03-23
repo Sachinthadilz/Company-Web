@@ -9,11 +9,14 @@ import { DashboardSummary } from "../components/admin/DashboardSummary";
 import { HeroImagesSection } from "../components/admin/HeroImagesSection";
 import { EmployeeOfMonthSection } from "../components/admin/EmployeeOfMonthSection";
 import { BlogSection } from "../components/admin/BlogSection";
+import { TestimonialsSection } from "../components/admin/TestimonialsSection";
+import { useSessionTimeout } from "../hooks/useSessionTimeout";
 
-type AdminSection = "overview" | "projects" | "services" | "jobs" | "contacts" | "hero" | "eom" | "blog";
+type AdminSection = "overview" | "projects" | "services" | "jobs" | "contacts" | "hero" | "eom" | "blog" | "testimonials";
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState<AdminSection>("overview");
+  useSessionTimeout(); // auto-logout after 2 hours of inactivity
 
   const {
     adminEmail,
@@ -57,6 +60,7 @@ const AdminDashboard = () => {
     { key: "hero", label: "Hero Images" },
     { key: "eom", label: "Employee of Month" },
     { key: "blog", label: "Blog" },
+    { key: "testimonials", label: "Testimonials" },
   ];
 
   return (
@@ -183,6 +187,7 @@ const AdminDashboard = () => {
         {activeSection === "hero" && <HeroImagesSection />}
         {activeSection === "eom" && <EmployeeOfMonthSection />}
         {activeSection === "blog" && <BlogSection />}
+        {activeSection === "testimonials" && <TestimonialsSection />}
       </main>
     </div>
   );

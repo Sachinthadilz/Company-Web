@@ -16,6 +16,8 @@ interface Blog {
 }
 
 import API_BASE from '../../config/api';
+import { TipTapEditor } from './TipTapEditor';
+import toast from 'react-hot-toast';
 
 const API = API_BASE;
 
@@ -34,7 +36,6 @@ export const BlogSection = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm());
@@ -50,7 +51,7 @@ export const BlogSection = () => {
       const res = await fetch(`${API}/admin/blogs`, { credentials: 'include' });
       const data = await res.json();
       if (data.success) setBlogs(data.data);
-    } catch { setError('Failed to load posts'); }
+    } catch { toast.error('Failed to load posts'); }
     finally { setLoading(false); }
   }, []);
 
@@ -63,14 +64,15 @@ export const BlogSection = () => {
   };
 
   const handleCoverUpload = async (file: File) => {
-    setUploading(true); setError('');
+    setUploading(true);
     try {
       const fd = new FormData(); fd.append('image', file);
       const res = await fetch(`${API}/upload`, { method: 'POST', credentials: 'include', body: fd });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message ?? 'Upload failed');
       f('coverUrl', data.url); f('coverPublicId', data.publicId);
-    } catch (e) { setError(e instanceof Error ? e.message : 'Upload failed'); }
+      toast.success('Cover uploaded');
+    } catch (e) { toast.error(e instanceof Error ? e.message : 'Upload failed'); }
     finally { setUploading(false); }
   };
 
@@ -90,7 +92,7 @@ export const BlogSection = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); setSaving(true); setError('');
+    e.preventDefault(); setSaving(true);
     try {
       const url = editingId ? `${API}/admin/blogs/${editingId}` : `${API}/admin/blogs`;
       const res = await fetch(url, {
@@ -99,8 +101,9 @@ export const BlogSection = () => {
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message ?? 'Save failed');
+      toast.success(editingId ? 'Post updated' : 'Post created');
       await fetchAll(); closeForm();
-    } catch (e) { setError(e instanceof Error ? e.message : 'Save failed'); }
+    } catch (e) { toast.error(e instanceof Error ? e.message : 'Save failed'); }
     finally { setSaving(false); }
   };
 
@@ -110,8 +113,9 @@ export const BlogSection = () => {
       const res = await fetch(`${API}/admin/blogs/${id}`, { method: 'DELETE', credentials: 'include' });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message ?? 'Delete failed');
+      toast.success('Post deleted');
       setBlogs((p) => p.filter((b) => b._id !== id)); setConfirmDeleteId(null);
-    } catch (e) { setError(e instanceof Error ? e.message : 'Delete failed'); }
+    } catch (e) { toast.error(e instanceof Error ? e.message : 'Delete failed'); }
   };
 
   return (
@@ -131,8 +135,6 @@ export const BlogSection = () => {
           </button>
         )}
       </div>
-
-      {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
       {/* ── Form ── */}
       {showForm && (
@@ -179,9 +181,11 @@ export const BlogSection = () => {
             {/* Content */}
             <label className="block">
               <span className="mb-1.5 block text-sm font-medium text-slate-700">Content <span className="text-red-500">*</span></span>
-              <textarea value={form.content} required onChange={(e) => f('content', e.target.value)} rows={12}
-                placeholder="Write your blog post here… (Markdown supported)"
-                className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-mono outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 min-h-48" />
+              <TipTapEditor
+                content={form.content}
+                onChange={(html) => f('content', html)}
+                placeholder="Write your blog post here… Use the toolbar for formatting."
+              />
             </label>
 
             {/* Cover image */}

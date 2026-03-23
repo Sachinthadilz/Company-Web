@@ -9,7 +9,8 @@ type AdminSection =
   | "contacts"
   | "hero"
   | "eom"
-  | "blog";
+  | "blog"
+  | "testimonials";
 
 interface DashboardSummaryProps {
   projectsCount: number;
@@ -42,6 +43,7 @@ export const DashboardSummary = ({
   const [eomCount, setEomCount] = useState<number | null>(null);
   const [blogPublished, setBlogPublished] = useState<number | null>(null);
   const [blogDrafts, setBlogDrafts] = useState<number | null>(null);
+  const [testimonialCount, setTestimonialCount] = useState<number | null>(null);
 
   useEffect(() => {
     // Hero images count (public endpoint)
@@ -65,6 +67,11 @@ export const DashboardSummary = ({
           setBlogDrafts(d.data.filter((b: { published: boolean }) => !b.published).length);
         }
       })
+      .catch(() => {});
+    // Testimonials count (public endpoint)
+    fetch(`${API}/testimonials`)
+      .then((r) => r.json())
+      .then((d) => { if (d.success) setTestimonialCount(d.data.length); })
       .catch(() => {});
   }, []);
 
@@ -134,6 +141,13 @@ export const DashboardSummary = ({
       accent: "hover:border-pink-600",
       badge: blogDrafts !== null && blogDrafts > 0 ? `${blogDrafts} drafts` : undefined,
     },
+    {
+      label: "Testimonials",
+      value: testimonialCount ?? "—",
+      sub: "Client reviews",
+      section: "testimonials",
+      accent: "hover:border-indigo-500",
+    },
   ];
 
   const quickActions: { label: string; section: AdminSection }[] = [
@@ -143,6 +157,7 @@ export const DashboardSummary = ({
     { label: "+ Upload hero image", section: "hero" },
     { label: "+ New blog post", section: "blog" },
     { label: "+ Add employee of month", section: "eom" },
+    { label: "+ Add testimonial", section: "testimonials" },
   ];
 
   return (

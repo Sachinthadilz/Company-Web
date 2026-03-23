@@ -37,6 +37,12 @@ import {
   updateBlog,
   deleteBlog,
 } from '../controllers/blogController';
+import {
+  getAll as getAllTestimonials,
+  create as createTestimonial,
+  update as updateTestimonial,
+  remove as removeTestimonial,
+} from '../controllers/testimonialController';
 
 const router = Router();
 
@@ -78,5 +84,11 @@ router.get('/blogs/:id', getBlogById);
 router.post('/blogs', createBlog);
 router.put('/blogs/:id', updateBlog);
 router.delete('/blogs/:id', deleteBlog);
+
+// Testimonials
+router.get('/testimonials', getAllTestimonials);
+router.post('/testimonials', createTestimonial);
+router.put('/testimonials/:id', updateTestimonial);
+router.delete('/testimonials/:id', removeTestimonial);
 
 export default router;
