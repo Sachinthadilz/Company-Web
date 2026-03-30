@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { Github, Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -13,7 +13,8 @@ const Footer = () => {
             Ready to Build Something Amazing?
           </h2>
           <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
-            Partner with ARTecX Solutions to transform your digital vision into reality.
+            Partner with ARTecX Solutions to transform your digital vision into
+            reality.
           </p>
           <Link
             to="/contact"
@@ -35,17 +36,28 @@ const Footer = () => {
               </div>
               <div>
                 <span className="font-black text-xl text-white">ARTecX</span>
-                <span className="block text-xs text-slate-400 -mt-1">Solutions</span>
+                <span className="block text-xs text-slate-400 -mt-1">
+                  Solutions
+                </span>
               </div>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
-              Building innovative digital solutions that drive business growth and deliver exceptional user experiences.
+              Building innovative digital solutions that drive business growth
+              and deliver exceptional user experiences.
             </p>
             <div className="flex gap-3">
               {[
-                { Icon: Github, href: 'https://github.com', label: 'GitHub' },
-                { Icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-                { Icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+                { Icon: Github, href: "https://github.com", label: "GitHub" },
+                {
+                  Icon: Linkedin,
+                  href: "https://linkedin.com",
+                  label: "LinkedIn",
+                },
+                {
+                  Icon: Twitter,
+                  href: "https://twitter.com",
+                  label: "Twitter",
+                },
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}
@@ -66,12 +78,12 @@ const Footer = () => {
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-3">
               {[
-                { to: '/', label: 'Home' },
-                { to: '/about', label: 'About Us' },
-                { to: '/services', label: 'Services' },
-                { to: '/projects', label: 'Projects' },
-                { to: '/careers', label: 'Careers' },
-                { to: '/contact', label: 'Contact' },
+                { to: "/", label: "Home" },
+                { to: "/about", label: "About Us" },
+                { to: "/services", label: "Services" },
+                { to: "/projects", label: "Projects" },
+                { to: "/careers", label: "Careers" },
+                { to: "/contact", label: "Contact" },
               ].map(({ to, label }) => (
                 <li key={label}>
                   <Link
@@ -90,12 +102,12 @@ const Footer = () => {
             <h3 className="text-white font-semibold mb-4">Services</h3>
             <ul className="space-y-3">
               {[
-                'Web Development',
-                'Mobile App Development',
-                'Cloud Solutions',
-                'UI/UX Design',
-                'API Development',
-                'System Integration',
+                "Web Development",
+                "Mobile App Development",
+                "Cloud Solutions",
+                "UI/UX Design",
+                "API Development",
+                "System Integration",
               ].map((service) => (
                 <li key={service}>
                   <Link
@@ -115,17 +127,26 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <Mail size={16} className="text-secondary mt-0.5 shrink-0" />
-                <a href="mailto:info@artecx-solutions.com" className="text-slate-400 hover:text-white text-sm transition-colors">
+                <a
+                  href="mailto:info@artecx-solutions.com"
+                  className="text-slate-400 hover:text-white text-sm transition-colors"
+                >
                   info@artecx-solutions.com
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <Phone size={16} className="text-secondary mt-0.5 shrink-0" />
                 <div className="flex flex-col">
-                  <a href="tel:+447356200686" className="text-slate-400 hover:text-white text-sm transition-colors">
+                  <a
+                    href="tel:+447356200686"
+                    className="text-slate-400 hover:text-white text-sm transition-colors"
+                  >
                     +44 735 6200 686 (UK)
                   </a>
-                  <a href="tel:+94719620413" className="text-slate-400 hover:text-white text-sm transition-colors mt-1">
+                  <a
+                    href="tel:+94719620413"
+                    className="text-slate-400 hover:text-white text-sm transition-colors mt-1"
+                  >
                     +94 719 620 413 (SL)
                   </a>
                 </div>
@@ -146,11 +167,18 @@ const Footer = () => {
             © {currentYear} ARTecX Solutions. All rights reserved.
           </p>
           <div className="flex gap-6">
-            {['Privacy Policy', 'Terms of Service'].map((item) => (
-              <a key={item} href="#" className="text-slate-500 hover:text-slate-300 text-sm transition-colors">
-                {item}
-              </a>
-            ))}
+            <Link
+              to="/privacy-policy"
+              className="text-slate-500 hover:text-slate-300 text-sm transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/terms-of-service"
+              className="text-slate-500 hover:text-slate-300 text-sm transition-colors"
+            >
+              Terms of Service
+            </Link>
           </div>
         </div>
       </div>

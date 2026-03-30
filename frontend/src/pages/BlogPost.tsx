@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
+import DOMPurify from 'dompurify';
 
 interface BlogPost {
   _id: string;
@@ -20,9 +21,9 @@ import API_BASE from '../config/api';
 
 const API = API_BASE;
 
-// Very simple markdown-to-html renderer for headings, bold, italic, code, paragraphs
+// Simple markdown-to-html renderer for headings, bold, italic, code, paragraphs
 const renderMarkdown = (text: string): string => {
-  return text
+  const html = text
     .replace(/^### (.+)$/gm, '<h3 class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3">$1</h3>')
     .replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4">$1</h2>')
     .replace(/^# (.+)$/gm, '<h1 class="text-3xl font-bold text-slate-900 dark:text-white mt-10 mb-4">$1</h1>')
@@ -33,6 +34,13 @@ const renderMarkdown = (text: string): string => {
     .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-slate-600 dark:text-slate-400">$1</li>')
     .replace(/\n\n/g, '</p><p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">')
     .replace(/^(?!<[h|b|l|c|p])(.+)$/gm, '<p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4">$1</p>');
+  
+  // Sanitize HTML to prevent XSS attacks
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['h1', 'h2', 'h3', 'p', 'strong', 'em', 'code', 'blockquote', 'li', 'ul', 'ol', 'br'],
+    ALLOWED_ATTR: ['class'],
+    KEEP_CONTENT: true,
+  });
 };
 
 const BlogPost = () => {
