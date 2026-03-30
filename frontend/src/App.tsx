@@ -14,6 +14,8 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 const ScrollToTop = () => {
   const location = useLocation();
@@ -48,6 +50,8 @@ const PublicRoutes = () => (
       <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
       <Route path="/blog" element={<PageWrapper><Blog /></PageWrapper>} />
       <Route path="/blog/:slug" element={<PageWrapper><BlogPost /></PageWrapper>} />
+      <Route path="/privacy-policy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
+      <Route path="/terms-of-service" element={<PageWrapper><TermsOfService /></PageWrapper>} />
     </Routes>
   </AnimatePresence>
 );
